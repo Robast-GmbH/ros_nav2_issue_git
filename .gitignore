@@ -135,3 +135,9 @@ test
 #rosbag
 *.db3
 rosbag2*
+
+
+#turtlebot stuff
+utils/
+turtlebot3/turtlebot3_msgs
+turtlebot3/turtlebot3_simulations

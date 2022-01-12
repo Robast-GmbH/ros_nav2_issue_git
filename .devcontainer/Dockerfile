@@ -38,5 +38,26 @@ RUN colcon mixin add default \
 
 # install ros2 packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    ros-galactic-desktop \
+    ros-${ROS_DISTRO}-desktop \
+    ros-${ROS_DISTRO}-gazebo* \
+    && rm -rf /var/lib/apt/lists/* \
+    && rosdep init || echo "rosdep already initialized"
+
+RUN apt-get update && apt-get install -y\
+    python3-colcon-common-extensions\
+    ros-${ROS_DISTRO}-cartographer\
+    ros-${ROS_DISTRO}-cartographer-ros \
+    ros-${ROS_DISTRO}-navigation2 \
+    ros-${ROS_DISTRO}-nav2-bringup \
+    python3-vcstool \
     && rm -rf /var/lib/apt/lists/*
+
+
+RUN apt-get update \
+  && echo "source /usr/share/bash-completion/completions/git" >> /home/$USER/.bashrc \
+  && echo "if [ -f /opt/ros/${ROS_DISTRO}/setup.bash ]; then source /opt/ros/${ROS_DISTRO}/setup.bash; fi" >> /home/$USER/.bashrc \
+  && echo "cd ~/../../workspaces/ros_nav2_issue_git" >> /home/$USER/.bashrc \
+  && echo 'export PS1="\[\e[31m\][\[\e[m\]\[\e[38;5;172m\]\u\[\e[m\]@\[\e[38;5;153m\]\h\[\e[m\]\[\e[38;5;214m\]\W\[\e[m\]\[\e[31m\]]\[\e[m\]\\$"' >> /home/$USER/.bashrc
+
+COPY "/entrypoint.sh" "/entrypoint.sh"
+ENTRYPOINT ["/entrypoint.sh"]
