@@ -2,6 +2,18 @@
 # generated from docker_images_ros2/create_ros_image.Dockerfile.em
 FROM ros:galactic-ros-core-focal
 
+ARG DEBIAN_FRONTEND=noninteractive
+RUN echo "Set disable_coredump false" >> /etc/sudo.conf
+RUN apt-get update -q && \
+    apt-get upgrade -yq && \
+    apt-get install -yq wget curl git build-essential vim sudo lsb-release locales bash-completion tzdata gosu && \
+    rm -rf /var/lib/apt/lists/*
+RUN useradd --create-home --home-dir /home/ubuntu --shell /bin/bash --user-group --groups adm,sudo ubuntu && \
+    echo ubuntu:ubuntu | chpasswd && \
+    echo "ubuntu ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+ENV USER ubuntu
+ARG DEBIAN_FRONTEND=
+
 # install bootstrap tools
 RUN apt-get update && apt-get install --no-install-recommends -y \
     build-essential \
