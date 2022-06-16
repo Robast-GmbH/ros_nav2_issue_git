@@ -1,6 +1,6 @@
 # This is an auto generated Dockerfile for ros:ros-base
 # generated from docker_images_ros2/create_ros_image.Dockerfile.em
-FROM ros:galactic-ros-core-focal
+FROM ros:humble
 
 ARG DEBIAN_FRONTEND=noninteractive
 RUN echo "Set disable_coredump false" >> /etc/sudo.conf
